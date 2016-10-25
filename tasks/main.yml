@@ -19,15 +19,15 @@
   template: src=mongod.conf.j2 dest=/etc/mongod.conf
   notify: restart mongod
 
-- name: Check if MongoDB port is already configured
-  shell: semanage port -l | grep {{ mongo_net.port }}
-  register: mongo_port
-  changed_when: "'mongod_port_t' not in mongo_port.stdout or ' {{ mongo_net.port }},' not in mongo_port.stdout"
+# - name: Check if MongoDB port is already configured
+#   shell: semanage port -l | grep {{ mongo_net.port }}
+#   register: mongo_port
+#   changed_when: "'mongod_port_t' not in mongo_port.stdout or ' {{ mongo_net.port }},' not in mongo_port.stdout"
 
-- name: Open port for MongoDB
-  command: semanage port -a -t mongod_port_t -p tcp {{ mongo_net.port }}
-  notify: restart mongod
-  when: mongo_port.changed
+# - name: Open port for MongoDB
+#   command: semanage port -a -t mongod_port_t -p tcp {{ mongo_net.port }}
+#   notify: restart mongod
+#   when: mongo_port.changed
 
 - name: Enable mongod service on startup
   service: name=mongod enabled=yes
